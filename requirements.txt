@@ -1,0 +1,10 @@
+tornado==6.2
+# cx-Oracle==8.3.0
+# django-ipware==4.0.2
+# simplejson~=3.17.6
+requests==2.28.1
+django-proxy~=1.2.1
+pytz==2022.7
+sqlparse==0.4.3
+beautifulsoup4~=4.11.1
+lxml==4.9.2
