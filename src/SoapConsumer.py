@@ -39,10 +39,7 @@ class SoapConsumer:
         xml_response = BeautifulSoup(xml_response, 'xml')
         xml_response = self.__add_envelop_source_to_target(xml_request, xml_response)
         xml_response = self.__add_header_source_to_target(xml_request, xml_response)
-        # xml_request.Body.clear()
-        # for child in xml_response.Body:
-        #     xml_request.Body.append(child)
-        print(xml_response)
+
         return xml_response
 
     def __add_envelop_source_to_target(self, source_xml, target_xml):

@@ -1,1 +1,10 @@
+venv
 .idea
+src/__pycache__
+src/__pycache*
+**/__pycache__/
+**/__pycache__
+
+*.pyc
+
+__pycache__/

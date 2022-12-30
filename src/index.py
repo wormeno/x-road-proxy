@@ -26,12 +26,6 @@ def make_app():
     ], autoreload=True)
 
 
-# async def main():
-#     app = make_app()
-#     app.listen(8082)
-#     await asyncio.Event().wait()
-
-
 if __name__ == "__main__":
     logging.info('Starting up')
     app = make_app()
