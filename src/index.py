@@ -16,6 +16,7 @@ class MainHandler(tornado.web.RequestHandler):
         result = SoapConsumer().process_request(self.request)
 
         self.set_header('Content-Type', 'text/xml')
+        logging.info("Process request Ok!")
         self.write(str(result))
 
 
@@ -27,6 +28,7 @@ def make_app():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     logging.info('Starting up')
     app = make_app()
     app.listen(8082)
