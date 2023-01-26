@@ -4,6 +4,32 @@ from bs4 import BeautifulSoup
 from lxml.html import HTMLParser
 
 
+def value_is_empty(value):
+    return value is None or value == ''
+
+
+def value_ci_in_array(value, array):
+    return len(list(filter(lambda item: item.upper() == value.upper(), array))) > 0
+
+
+class HeaderValido:
+    """
+        Retorna el header valido para enviar al cliente soap
+        Elimina del header original, los valores agregados por x-road y aquellos headers que no informan valor
+    """
+
+    headers_no_validos = ["Host", "Transfer-Encoding"]
+
+    def get_header_valido(self, un_header):
+        return dict(filter(self.__filtered_in_array, un_header.items()))
+
+    def __filtered_in_array(self, pair):
+        key, value = pair
+        if value_is_empty(value):
+            return False
+        return value_ci_in_array(key, self.headers_no_validos) is False
+
+
 class SoapConsumer:
 
     def process_request(self, request):
@@ -16,22 +42,22 @@ class SoapConsumer:
         xml_request = request.body
         url_ws = request.protocol + ":/" + request.uri
 
+        headers = HeaderValido().get_header_valido(request.headers)
         try:
-            req = requests.Request('POST', url_ws,
-                                   data=xml_request)
+            req = requests.Request('POST', url_ws, headers=headers, data=xml_request)
+
         except requests.RequestException as e:
             raise e
 
-        prepped_requ = req.prepare()
-
-        s = requests.Session()
-        xml_response = s.send(prepped_requ)
+        xml_response = requests.Session().send(req.prepare())
 
         result = self.__parse_xml(xml_request, xml_response.content)
         return result
 
     def __parse_xml(self, xml_request, xml_response):
         """
+        xml_request: xml enviado en el request body
+        xml_response: respuesta xml del servicio soap
         Reemplaza el xml_request.body por el xml_response.body
         """
         xml_request = BeautifulSoup(xml_request, 'xml')
@@ -69,7 +95,6 @@ class SoapConsumer:
                 target_xml.Envelope.Header.extend(child)
 
         return target_xml
-
 
     def __validar_xml_request(self, xml_request):
         try:
