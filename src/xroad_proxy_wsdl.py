@@ -4,6 +4,16 @@ import tornado.web
 import logging
 import tornado.options
 from SoapConsumer import SoapConsumer
+from jproperties import Properties
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+configs = Properties()
+with open(str(BASE_DIR) + '/src/config/application.properties', 'rb') as config_file:
+    configs.load(config_file)
+
+PORT = int(configs["PORT"].data)
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -31,6 +41,6 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     logging.info('Starting up')
     app = make_app()
-    app.listen(8082)
+    app.listen(PORT)
     tornado.options.parse_command_line
     tornado.ioloop.IOLoop.current().start()

@@ -4,7 +4,7 @@ services:
   web:
     image: proxy-xroad
     build: .
-    command: python src/index.py runserver 0.0.0.0:8082
+    command: python src/xroad_proxy_wsdl.py runserver 0.0.0.0:8082
     volumes:
       - .:/my_app_dir
     ports:
