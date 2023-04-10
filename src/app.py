@@ -41,6 +41,6 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     logging.info('Starting up')
     app = make_app()
-    app.listen(PORT)
+    app.listen(8080)
     tornado.options.parse_command_line
     tornado.ioloop.IOLoop.current().start()

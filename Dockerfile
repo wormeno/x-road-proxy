@@ -1,4 +1,5 @@
-FROM python:3.7
+#FROM python:3.7
+FROM ubi8/s2i-base:rhel8.7
 ENV PYTHONUNBUFFERED 1
 WORKDIR    /opt/oracle
 RUN        apt-get update && apt-get install -y libaio1 wget unzip \
